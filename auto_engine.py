@@ -1,9 +1,8 @@
 import os
 import json
 import urllib.request
-import subprocess
+import re
 
-# Automated High-CPC B2B Financial Database
 TOOLS_MATRIX = [
     {
         "slug": "sba-7a-calculator.html",
@@ -13,9 +12,7 @@ TOOLS_MATRIX = [
         "input1": "Loan Principal ($)", "val1": 350000,
         "input2": "Annual Interest Rate (%)", "val2": 8.5,
         "input3": "Term (Years)", "val3": 10,
-        "keyword": "SBA 7a loan payment calculator",
-        "article_title": "Optimizing SBA 7(a) Capital Facilities for Commercial Growth",
-        "article_p": "The SBA 7(a) program provides government-backed capital with terms that conventional commercial debt cannot match. Guarantee structures allow lower equity down payments, shielding operational cash flow."
+        "badge": "SBA 7(a) Module"
     },
     {
         "slug": "working-capital-liquidity.html",
@@ -25,9 +22,7 @@ TOOLS_MATRIX = [
         "input1": "Current Assets ($)", "val1": 600000,
         "input2": "Current Liabilities ($)", "val2": 320000,
         "input3": "Monthly Burn ($)", "val3": 50000,
-        "keyword": "working capital liquidity calculator",
-        "article_title": "Corporate Liquidity Metrics: Measuring Operational Solvency",
-        "article_p": "Treasury solvency dictates that Current Assets exceed short-term obligations by at least 1.5x. Maintaining this liquidity buffer prevents cash flow compression during delayed receivable cycles."
+        "badge": "Liquidity Suite"
     },
     {
         "slug": "invoice-factoring-cost.html",
@@ -37,9 +32,7 @@ TOOLS_MATRIX = [
         "input1": "Total Invoiced Value ($)", "val1": 150000,
         "input2": "Advance Rate (%)", "val2": 85,
         "input3": "Factoring Fee (%)", "val3": 2.5,
-        "keyword": "invoice factoring discount calculator",
-        "article_title": "Supply Chain Capitalization via Invoice Factoring",
-        "article_p": "Monetizing accounts receivable eliminates cash flow bottlenecks caused by net-60 corporate settlement terms. Determining true annualized factoring costs protects gross operating margins."
+        "badge": "A/R Financing"
     },
     {
         "slug": "commercial-solar-roi.html",
@@ -49,14 +42,12 @@ TOOLS_MATRIX = [
         "input1": "Turnkey System Cost ($)", "val1": 450000,
         "input2": "Federal ITC Rate (%)", "val2": 30,
         "input3": "Annual Energy Savings ($)", "val3": 55000,
-        "keyword": "commercial solar investment tax credit calculator",
-        "article_title": "Commercial Energy Infrastructure: Solar Tax Credit Arbitrage",
-        "article_p": "Corporate sustainability investments under Section 48 provide immediate dollar-for-dollar tax offsets alongside accelerated MACRS depreciation, substantially shortening capital recovery cycles."
+        "badge": "Clean Energy CapEx"
     }
 ]
 
 HISTORY_FILE = "deployed_history.json"
-BASE_URL = "https://capital-matrix297.pages.dev/"
+BASE_URL = "https://capital-matrix.pages.dev/"
 
 def load_history():
     if os.path.exists(HISTORY_FILE):
@@ -78,22 +69,12 @@ def generate_tool_html(item):
     <meta name="description" content="{item['desc']}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://alwingulla.com/88/tag.min.js" data-zone="12345" async data-cfasync="false"></script>
-    <script type="application/ld+json">
-    {{
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "{item['h1']}",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "All",
-      "offers": {{ "@type": "Offer", "price": "0" }}
-    }}
-    </script>
 </head>
 <body class="bg-[#060913] text-slate-200 min-h-screen font-sans antialiased">
     <header class="border-b border-slate-800 bg-[#090d1a] px-6 py-4 flex justify-between items-center sticky top-0 z-50">
         <div class="flex items-center space-x-3">
             <a href="/" class="text-white font-extrabold text-xl tracking-tight">CAPITAL<span class="text-blue-500">·MATRIX</span></a>
-            <span class="text-[9px] uppercase font-bold tracking-widest bg-blue-950 text-blue-400 px-2 py-0.5 rounded border border-blue-800">SEO Node</span>
+            <span class="text-[9px] uppercase font-bold tracking-widest bg-blue-950 text-blue-400 px-2 py-0.5 rounded border border-blue-800">{item['badge']}</span>
         </div>
         <a href="/" class="bg-blue-600 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg hover:bg-blue-500 transition">← Master Suite Hub</a>
     </header>
@@ -136,26 +117,15 @@ def generate_tool_html(item):
                 </div>
             </div>
         </div>
-
-        <article class="mt-14 bg-[#0e1424] border border-slate-800 rounded-2xl p-8 text-slate-300 leading-relaxed space-y-4">
-            <h2 class="text-2xl font-bold text-white">{item['article_title']}</h2>
-            <p>{item['article_p']}</p>
-        </article>
     </main>
-
-    <footer class="mt-16 border-t border-slate-800 bg-[#04060b] py-6 text-center text-xs text-slate-600">
-        &copy; 2026 Capital Matrix Global Systems. Automated algorithmic edge node.
-    </footer>
 
     <script>
         function runCalculation() {{
             const a = parseFloat(document.getElementById('v1').value) || 0;
             const b = parseFloat(document.getElementById('v2').value) || 0;
             const c = parseFloat(document.getElementById('v3').value) || 1;
-
             const resA = Math.round(a * (1 + (b / 100)));
             const resB = (resA / c).toFixed(2);
-
             document.getElementById('out1').innerText = "$" + resA.toLocaleString();
             document.getElementById('out2').innerText = "$" + Number(resB).toLocaleString() + " Index";
         }}
@@ -163,6 +133,42 @@ def generate_tool_html(item):
     </script>
 </body>
 </html>"""
+
+def update_homepage(history_items):
+    if not os.path.exists("index.html"):
+        return
+    with open("index.html", "r", encoding="utf-8") as f:
+        content = f.read()
+
+    # Generate Cards for Homepage
+    cards = ""
+    for item in history_items:
+        cards += f"""
+        <a href="/{item['slug']}" class="block bg-[#0e1424] hover:bg-slate-800/60 border border-slate-800 rounded-xl p-5 transition group">
+            <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/60 px-2 py-0.5 rounded border border-blue-800">{item['badge']}</span>
+            <h4 class="text-white font-bold text-base mt-2 group-hover:text-blue-400 transition">{item['h1']}</h4>
+            <p class="text-slate-400 text-xs mt-1 leading-relaxed">{item['desc']}</p>
+        </a>"""
+
+    section = f"""<!-- AUTO_GENERATED_TOOLS_START -->
+    <section class="mt-14 max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-white">Expanded Financial Tools Directory</h3>
+            <span class="text-xs text-emerald-400 font-mono">● Auto-Generated via Cloud Edge</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {cards}
+        </div>
+    </section>
+    <!-- AUTO_GENERATED_TOOLS_END -->"""
+
+    if "<!-- AUTO_GENERATED_TOOLS_START -->" in content:
+        content = re.sub(r"<!-- AUTO_GENERATED_TOOLS_START -->.*?<!-- AUTO_GENERATED_TOOLS_END -->", section, content, flags=re.DOTALL)
+    else:
+        content = content.replace("</main>", f"{section}\n</main>")
+
+    with open("index.html", "w", encoding="utf-8") as f:
+        f.write(content)
 
 def update_sitemap(history):
     xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -173,26 +179,6 @@ def update_sitemap(history):
     with open("sitemap.xml", "w", encoding="utf-8") as f:
         f.write("\n".join(xml))
 
-def ping_google():
-    try:
-        sitemap_url = urllib.parse.quote(f"{BASE_URL}sitemap.xml")
-        ping_endpoint = f"https://www.google.com/ping?sitemap={sitemap_url}"
-        req = urllib.request.Request(ping_endpoint, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req, timeout=5) as response:
-            print("[+] Google Search Ping: SUCCESS (Bots Notified)")
-    except Exception as e:
-        print(f"[!] Google ping notification sent.")
-
-def auto_git_push():
-    try:
-        print("[+] Executing automated Git deployment...")
-        subprocess.run(["git", "add", "."], check=True)
-        subprocess.run(["git", "commit", "-m", "Automated SEO Tool Deployment"], check=True)
-        subprocess.run(["git", "push", "origin", "main"], check=True)
-        print("[+] DEPLOYMENT COMPLETE! Pushed to GitHub -> Cloudflare Edge is Live.")
-    except Exception as e:
-        print(f"[!] Git push note: Make sure your local folder is linked to Git.")
-
 def main():
     history = load_history()
     next_item = None
@@ -202,32 +188,22 @@ def main():
             break
 
     if not next_item:
-        print("[*] All programmed assets in the current cycle are already deployed and ranking.")
+        print("[*] All programmed assets in the current cycle are deployed.")
         return
 
-    print(f"\n==========================================")
-    print(f"[+] Launching Asset: {next_item['title']}")
-    
-    # 1. Generate Static HTML
-    html_content = generate_tool_html(next_item)
+    # 1. Create page
     with open(next_item['slug'], "w", encoding="utf-8") as f:
-        f.write(html_content)
-    print(f"[+] Static HTML Page Created: {next_item['slug']}")
+        f.write(generate_tool_html(next_item))
 
-    # 2. Update History & Sitemap
+    # 2. Save history
     history.append(next_item['slug'])
     save_history(history)
+
+    # 3. Update index.html and sitemap.xml
+    deployed_objects = [x for x in TOOLS_MATRIX if x['slug'] in history]
+    update_homepage(deployed_objects)
     update_sitemap(history)
-    print(f"[+] Sitemap.xml updated with new indexing endpoint.")
-
-    # 3. Inform Google Automatically
-    ping_google()
-
-    # 4. Zero-Touch Deployment
-    auto_git_push()
-
-    print(f"==========================================")
-    print(f"System finished. Live traffic pipeline active.\n")
+    print(f"[+] Successfully generated {next_item['slug']} and injected into index.html!")
 
 if __name__ == "__main__":
     main()
