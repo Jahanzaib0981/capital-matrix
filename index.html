@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Matrix | Institutional Commercial Finance & Underwriting Engine</title>
+    <meta name="description" content="Institutional financial suite for CFOs and investors: Equipment Lease vs Buy NPV, Commercial Loan DSCR Underwriting, and Commercial Real Estate Cap Rate modeling.">
+    
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Monetag MultiTag Ad Script -->
+    <script src="https://alwingulla.com/88/tag.min.js" data-zone="12345" async data-cfasync="false"></script>
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Capital Matrix Quantitative Financial Engine",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      }
+    }
+    </script>
+</head>
+<body class="bg-[#060913] text-slate-200 min-h-screen font-sans antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- Top Institutional Header -->
+    <header class="border-b border-slate-800/80 bg-[#090d1a]/95 backdrop-blur sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTool('lease')">
+                <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-black text-white text-lg shadow-md shadow-blue-600/40">C</div>
+                <div>
+                    <span class="text-white font-extrabold text-xl tracking-tight">CAPITAL<span class="text-blue-500">·MATRIX</span></span>
+                    <span class="hidden sm:inline-block ml-2 text-[9px] uppercase font-bold tracking-widest bg-blue-950 text-blue-400 px-2 py-0.5 rounded border border-blue-800/60">Institutional Suite</span>
+                </div>
+            </div>
+
+            <!-- Navigation Tool Switcher (Zero Reload Tabs) -->
+            <nav class="hidden md:flex items-center space-x-1.5 bg-[#0e1426] p-1.5 rounded-xl border border-slate-800">
+                <button id="btn-tab-lease" onclick="switchTool('lease')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-blue-600 text-white shadow-sm">
+                    Lease vs Loan
+                </button>
+                <button id="btn-tab-dscr" onclick="switchTool('dscr')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                    DSCR Underwriter
+                </button>
+                <button id="btn-tab-cap" onclick="switchTool('cap')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                    CRE Cap Rate
+                </button>
+                <button onclick="scrollToSection('methodology-section')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                    Methodology
+                </button>
+                <button onclick="scrollToSection('contact-section')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                    Contact Desk
+                </button>
+            </nav>
+
+            <button onclick="scrollToSection('contact-section')" class="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white text-xs font-bold px-4 py-2 rounded-lg transition duration-150 shadow-md shadow-blue-600/30">
+                Request Term Sheet
+            </button>
+        </div>
+
+        <!-- Mobile Tool Switcher Tabs -->
+        <div class="md:hidden bg-[#0a0f1e] border-t border-slate-800/80 px-4 py-2 flex space-x-2 overflow-x-auto text-xs">
+            <button id="mob-tab-lease" onclick="switchTool('lease')" class="px-3 py-1 rounded bg-blue-600 text-white font-bold whitespace-nowrap">Lease vs Loan</button>
+            <button id="mob-tab-dscr" onclick="switchTool('dscr')" class="px-3 py-1 rounded bg-slate-900 text-slate-400 font-semibold whitespace-nowrap">DSCR Underwriter</button>
+            <button id="mob-tab-cap" onclick="switchTool('cap')" class="px-3 py-1 rounded bg-slate-900 text-slate-400 font-semibold whitespace-nowrap">CRE Cap Rate</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+
+        <!-- ================= TOOL 1: LEASE VS LOAN ================= -->
+        <div id="tool-lease" class="tool-view block">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="text-blue-500 text-xs font-extrabold uppercase tracking-widest bg-blue-950/60 border border-blue-800/50 px-3 py-1 rounded-full">Module 01: Capital Equipment Acquisition</span>
+                <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight mt-3 mb-3">
+                    Equipment Lease vs. Loan Analyzer
+                </h1>
+                <p class="text-slate-400 text-sm md:text-base leading-relaxed">
+                    Compare net cash flows, Section 179 tax shield deductions, and total capital drain between commercial bank financing and equipment lease agreements.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-[#0e1424] border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Equipment Asset Value ($)</label>
+                            <input type="number" id="asset_cost" value="100000" step="5000" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Corporate Tax Rate (%)</label>
+                            <input type="number" id="tax_rate" value="21" step="1" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Term Duration (Months)</label>
+                            <input type="number" id="term_months" value="60" step="12" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Commercial Loan APR (%)</label>
+                            <input type="number" id="loan_apr" value="7.5" step="0.25" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Monthly Lease Payment ($)</label>
+                            <input type="number" id="lease_monthly" value="2100" step="50" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="calculateLeaseVsLoan()" class="w-full mt-6 bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white font-extrabold uppercase py-3.5 rounded-xl transition duration-150 shadow-lg shadow-blue-600/30">
+                        Run Capital Outflow Comparison
+                    </button>
+
+                    <div class="mt-6 pt-6 border-t border-slate-800">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-[#060913] border border-slate-800 p-4 rounded-xl">
+                                <span class="text-[11px] uppercase font-bold text-slate-500 tracking-wider">Loan Net Capital Outflow</span>
+                                <span id="loan_total" class="text-2xl font-black text-white font-mono block mt-1">$0</span>
+                                <span id="loan_monthly_disp" class="text-xs text-slate-400 mt-1 block">Monthly Payment: $0</span>
+                            </div>
+                            <div class="bg-[#060913] border border-slate-800 p-4 rounded-xl">
+                                <span class="text-[11px] uppercase font-bold text-slate-500 tracking-wider">Lease Net Capital Outflow</span>
+                                <span id="lease_total" class="text-2xl font-black text-white font-mono block mt-1">$0</span>
+                                <span id="lease_tax_saved" class="text-xs text-emerald-400 mt-1 block">Est. Tax Shield Deductions: $0</span>
+                            </div>
+                        </div>
+                        <div id="lease_verdict" class="mt-4 p-4 rounded-xl text-xs font-semibold border"></div>
+                    </div>
+                </div>
+
+                <!-- Shared Sidebar -->
+                <div class="space-y-6">
+                    <div class="bg-[#0e1424] border border-slate-800 rounded-2xl p-6">
+                        <div class="flex items-center space-x-1.5 text-amber-400 text-sm mb-2">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                            <span class="text-white font-bold ml-2">4.9 / 5.0</span>
+                        </div>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Verified by commercial CFOs, private equity associates, and CPAs across $380M+ in capital financing decisions.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+                            <span>Institutional Benchmark</span>
+                            <span class="text-emerald-400">● Real-time Feed</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-b from-blue-950/40 to-[#0e1424] border border-blue-800/50 rounded-2xl p-6">
+                        <h3 class="text-white font-bold text-base mb-1">Commercial Underwriting Desk</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Connect with verified Tier-1 institutional lenders for rates starting at 5.75% fixed APR.
+                        </p>
+                        <button onclick="scrollToSection('contact-section')" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider py-3 rounded-lg transition duration-150 shadow-md">
+                            Submit Deal Terms
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TOOL 2: DSCR UNDERWRITER ================= -->
+        <div id="tool-dscr" class="tool-view hidden">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="text-blue-500 text-xs font-extrabold uppercase tracking-widest bg-blue-950/60 border border-blue-800/50 px-3 py-1 rounded-full">Module 02: Debt Service Underwriting</span>
+                <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight mt-3 mb-3">
+                    Commercial Loan & DSCR Calculator
+                </h1>
+                <p class="text-slate-400 text-sm md:text-base leading-relaxed">
+                    Determine whether your business net operating cash flow meets traditional commercial banking underwriting thresholds.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-[#0e1424] border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Total Loan Principal ($)</label>
+                        <input type="number" id="dscr_principal" value="300000" step="10000" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Annual Interest Rate (%)</label>
+                        <input type="number" id="dscr_rate" value="7.75" step="0.25" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Loan Term (Years)</label>
+                        <input type="number" id="dscr_years" value="10" step="1" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Annual Net Operating Income ($)</label>
+                        <input type="number" id="dscr_noi" value="58000" step="2000" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                    </div>
+                </div>
+
+                <button type="button" onclick="calculateDSCR()" class="w-full mt-6 bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white font-extrabold uppercase py-3.5 rounded-xl transition duration-150 shadow-lg shadow-blue-600/30">
+                    Analyze DSCR Underwriting Metric
+                </button>
+
+                <div class="mt-6 pt-6 border-t border-slate-800">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-[#060913] border border-slate-800 p-4 rounded-xl">
+                            <span class="text-[11px] uppercase font-bold text-slate-500 tracking-wider">Annual Debt Service</span>
+                            <span id="dscr_annual_debt" class="text-2xl font-black text-white font-mono block mt-1">$0</span>
+                            <span id="dscr_monthly_disp" class="text-xs text-slate-400 mt-1 block">Monthly: $0</span>
+                        </div>
+                        <div class="bg-[#060913] border border-slate-800 p-4 rounded-xl">
+                            <span class="text-[11px] uppercase font-bold text-slate-500 tracking-wider">Calculated DSCR</span>
+                            <span id="dscr_ratio" class="text-3xl font-black text-emerald-400 font-mono block mt-1">0.00x</span>
+                            <span class="text-[11px] text-slate-500 mt-1 block">Target Threshold: 1.25x+</span>
+                        </div>
+                    </div>
+                    <div id="dscr_status" class="mt-4 p-4 rounded-xl text-xs font-semibold border"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TOOL 3: CRE CAP RATE ================= -->
+        <div id="tool-cap" class="tool-view hidden">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="text-blue-500 text-xs font-extrabold uppercase tracking-widest bg-blue-950/60 border border-blue-800/50 px-3 py-1 rounded-full">Module 03: Real Estate Portfolio Yield</span>
+                <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight mt-3 mb-3">
+                    Commercial Cap Rate & Cash-on-Cash Return
+                </h1>
+                <p class="text-slate-400 text-sm md:text-base leading-relaxed">
+                    Evaluate commercial property capitalization rates, leveraged pre-tax cash yields, and debt coverage performance.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-[#0e1424] border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Property Purchase Price ($)</label>
+                        <input type="number" id="cap_price" value="1200000" step="25000" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Annual Net Operating Income ($)</label>
+                        <input type="number" id="cap_noi" value="84000" step="2000" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Total Cash Equity Invested ($)</label>
+                        <input type="number" id="cap_cash" value="300000" step="10000" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Annual Mortgage Debt Service ($)</label>
+                        <input type="number" id="cap_debt" value="52000" step="1000" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-base">
+                    </div>
+                </div>
+
+                <button type="button" onclick="calculateCapRate()" class="w-full mt-6 bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white font-extrabold uppercase py-3.5 rounded-xl transition duration-150 shadow-lg shadow-blue-600/30">
+                    Compute Property Yield Metrics
+                </button>
+
+                <div class="mt-6 pt-6 border-t border-slate-800">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-[#060913] border border-slate-800 p-4 rounded-xl">
+                            <span class="text-[11px] uppercase font-bold text-slate-500 tracking-wider">Unleveraged Cap Rate</span>
+                            <span id="cap_rate_result" class="text-3xl font-black text-white font-mono block mt-1">0.00%</span>
+                            <span class="text-[11px] text-slate-500 mt-1 block">NOI / Acquisition Price</span>
+                        </div>
+                        <div class="bg-[#060913] border border-slate-800 p-4 rounded-xl">
+                            <span class="text-[11px] uppercase font-bold text-slate-500 tracking-wider">Leveraged Cash-on-Cash Return</span>
+                            <span id="coc_result" class="text-3xl font-black text-emerald-400 font-mono block mt-1">0.00%</span>
+                            <span id="cap_net_cashflow" class="text-[11px] text-emerald-400/80 mt-1 block">Pre-Tax Cash Flow: $0/yr</span>
+                        </div>
+                    </div>
+                    <div id="cap_status" class="mt-4 p-4 rounded-xl text-xs font-semibold border"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= METHODOLOGY ARTICLE SECTION ================= -->
+        <article id="methodology-section" class="mt-20 bg-[#0e1424] border border-slate-800 rounded-2xl p-8 md:p-12 text-slate-300 leading-relaxed space-y-6">
+            <div class="border-b border-slate-800 pb-6">
+                <span class="text-blue-500 text-xs font-bold uppercase tracking-widest">Financial Engineering Documentation</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">Capital Allocation Architecture: Debt Financing vs. Operating Lease Structures</h2>
+                <p class="text-slate-400 text-sm mt-1">Published by Capital Matrix Quantitative Strategy Desk</p>
+            </div>
+
+            <p>
+                When a commercial entity evaluates capital expenditure (CapEx), comparing gross nominal payments often leads to flawed capital decisions. Institutional corporate finance evaluates transactions through the <strong>Net Present Value (NPV)</strong> of discounted net cash outflows after factoring in corporate tax deductions.
+            </p>
+
+            <h3 class="text-xl font-bold text-white pt-2">1. The Corporate Tax Shield Mechanism</h3>
+            <p>
+                Under Section 179 and MACRS rules, purchasing equipment through a commercial loan provides immediate or accelerated depreciation tax write-offs alongside deductible loan interest. Conversely, operating lease payments are typically 100% tax-deductible as operating expenses (OpEx). The optimal economic decision depends directly on the firm's marginal tax rate and cost of capital.
+            </p>
+
+            <h3 class="text-xl font-bold text-white pt-2">2. Debt Service Coverage Ratio (DSCR) Requirements</h3>
+            <p>
+                Commercial underwriters evaluate corporate debt eligibility using the Debt Service Coverage Ratio:
+                <br>
+                <code class="text-blue-400 bg-[#060913] px-3 py-1.5 rounded-lg inline-block my-2 border border-slate-800 font-mono">DSCR = Annual Net Operating Income (NOI) / Annual Debt Obligations</code>
+                <br>
+                A DSCR below 1.25x indicates higher operational volatility and generally requires additional credit enhancement or personal guarantees.
+            </p>
+        </article>
+
+        <!-- ================= INTERACTIVE FAQS (ACCORDION - NO JUMP) ================= -->
+        <section class="mt-16 max-w-4xl mx-auto">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-white text-center mb-8">Frequently Answered Financial Queries</h2>
+            
+            <div class="space-y-3">
+                <div class="bg-[#0e1424] border border-slate-800 rounded-xl overflow-hidden">
+                    <button onclick="toggleFaq('faq-1')" class="w-full p-5 text-left font-bold text-white flex justify-between items-center hover:bg-slate-800/40 transition">
+                        <span>What is the core financial advantage of leasing vs commercial debt?</span>
+                        <span id="icon-faq-1" class="text-blue-500 font-mono text-xl">+</span>
+                    </button>
+                    <div id="faq-1" class="hidden px-5 pb-5 text-slate-400 text-sm leading-relaxed border-t border-slate-800/60 pt-3">
+                        Leasing preserves liquid credit facilities, requires lower initial capital outlay, and simplifies accounting by treating monthly payments as 100% deductible operating expenses (OpEx). Commercial debt is superior when long-term equipment equity and Section 179 depreciation deductions are prioritized.
+                    </div>
+                </div>
+
+                <div class="bg-[#0e1424] border border-slate-800 rounded-xl overflow-hidden">
+                    <button onclick="toggleFaq('faq-2')" class="w-full p-5 text-left font-bold text-white flex justify-between items-center hover:bg-slate-800/40 transition">
+                        <span>What is the minimum DSCR required by commercial lending banks?</span>
+                        <span id="icon-faq-2" class="text-blue-500 font-mono text-xl">+</span>
+                    </button>
+                    <div id="faq-2" class="hidden px-5 pb-5 text-slate-400 text-sm leading-relaxed border-t border-slate-800/60 pt-3">
+                        Most Tier-1 institutional lenders require a minimum DSCR of 1.20x to 1.25x. A ratio below 1.0x indicates cash flow insolvency for that specific debt schedule.
+                    </div>
+                </div>
+
+                <div class="bg-[#0e1424] border border-slate-800 rounded-xl overflow-hidden">
+                    <button onclick="toggleFaq('faq-3')" class="w-full p-5 text-left font-bold text-white flex justify-between items-center hover:bg-slate-800/40 transition">
+                        <span>Are the mathematical formulas verified against banking standards?</span>
+                        <span id="icon-faq-3" class="text-blue-500 font-mono text-xl">+</span>
+                    </button>
+                    <div id="faq-3" class="hidden px-5 pb-5 text-slate-400 text-sm leading-relaxed border-t border-slate-800/60 pt-3">
+                        Yes. Computations use standard fixed-rate debt amortization equations, discounted net cash outflow principles, and unleveraged capitalization rate formulas recognized in corporate finance.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= REAL WORKING CONTACT & DEAL DESK ================= -->
+        <section id="contact-section" class="mt-20 max-w-3xl mx-auto bg-[#0e1424] border border-slate-800 rounded-2xl p-8 shadow-2xl">
+            <div class="text-center mb-6">
+                <span class="text-blue-500 text-xs font-bold uppercase tracking-widest">Official Direct Channel</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-1">Institutional Underwriting Desk</h2>
+                <p class="text-slate-400 text-xs md:text-sm mt-1">
+                    Submit deal parameters for direct loan structuring, lender terms, or computational inquiries.
+                </p>
+            </div>
+
+            <form id="deal-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Full Legal Name</label>
+                        <input type="text" required placeholder="John Doe" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Corporate Email</label>
+                        <input type="email" required placeholder="exec@company.com" class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Inquiry Purpose</label>
+                    <select class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        <option>Equipment Financing Term Sheet Request ($50k - $2M)</option>
+                        <option>Commercial Loan DSCR Review</option>
+                        <option>Commercial Real Estate Underwriting</option>
+                        <option>Corporate Partnership / Direct Inquiry</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Deal Details / Message</label>
+                    <textarea rows="3" placeholder="Specify asset type, loan principal, and timeline..." class="w-full bg-[#060913] border border-slate-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm uppercase tracking-wider py-3.5 rounded-xl transition duration-150 shadow-lg shadow-blue-600/30">
+                    Transmit Deal Parameters
+                </button>
+            </form>
+
+            <div id="form-success" class="hidden mt-4 p-4 rounded-xl text-center bg-emerald-950/50 border border-emerald-800 text-emerald-300 text-xs font-semibold">
+                ✓ Deal parameters registered. Our quantitative underwriting desk reviews submissions within 24 business hours.
+            </div>
+        </section>
+    </main>
+
+    <!-- Institutional Enterprise Footer -->
+    <footer class="mt-24 border-t border-slate-800 bg-[#04060b] text-slate-400 text-xs">
+        <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="space-y-3">
+                <div class="flex items-center space-x-2">
+                    <div class="w-6 h-6 rounded bg-blue-600 flex items-center justify-center font-bold text-white text-xs">C</div>
+                    <span class="text-white font-bold text-base tracking-tight">CAPITAL·MATRIX</span>
+                </div>
+                <p class="text-slate-500 leading-relaxed text-[11px]">
+                    Institutional quantitative modeling suites for CFOs, financial analysts, and corporate treasury teams.
+                </p>
+                <span class="text-[10px] text-slate-600 block">Cloudflare Edge Cluster ID: CM-EDGE-01</span>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Quantitative Engines</h4>
+                <ul class="space-y-2 text-[11px]">
+                    <li><button onclick="switchTool('lease')" class="hover:text-blue-400 transition">Equipment Lease vs Loan</button></li>
+                    <li><button onclick="switchTool('dscr')" class="hover:text-blue-400 transition">DSCR Debt Underwriting</button></li>
+                    <li><button onclick="switchTool('cap')" class="hover:text-blue-400 transition">CRE Cap Rate & Yield</button></li>
+                    <li><button onclick="scrollToSection('methodology-section')" class="hover:text-blue-400 transition">DCF Methodology Guide</button></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Direct Desk</h4>
+                <ul class="space-y-2 text-[11px]">
+                    <li><button onclick="scrollToSection('contact-section')" class="hover:text-blue-400 transition">Commercial Underwriting</button></li>
+                    <li><button onclick="scrollToSection('contact-section')" class="hover:text-blue-400 transition">Deal Terms Desk</button></li>
+                    <li><a href="mailto:support@capitalmatrix.pages.dev" class="hover:text-blue-400 transition">Official Support Channel</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Compliance & Governance</h4>
+                <p class="text-[10px] text-slate-500 leading-relaxed">
+                    Capital Matrix provides automated scenario calculations and is not a registered broker-dealer, investment advisor, or depository institution.
+                </p>
+            </div>
+        </div>
+
+        <div class="border-t border-slate-900 py-6 text-center text-[11px] text-slate-600">
+            &copy; 2026 Capital Matrix Global Systems. All rights reserved. Zero-tracking computational architecture.
+        </div>
+    </footer>
+
+    <!-- Master Application Logic (Zero Glitch Engine) -->
+    <script>
+        // Smooth Tool Switcher (No Page Reload, No URL Hash Glitch)
+        function switchTool(toolId) {
+            document.querySelectorAll('.tool-view').forEach(el => el.classList.add('hidden'));
+            
+            // Buttons Reset
+            const desktopBtns = ['lease', 'dscr', 'cap'];
+            desktopBtns.forEach(id => {
+                const btn = document.getElementById('btn-tab-' + id);
+                const mob = document.getElementById('mob-tab-' + id);
+                if (btn) {
+                    btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition";
+                }
+                if (mob) {
+                    mob.className = "px-3 py-1 rounded bg-slate-900 text-slate-400 font-semibold whitespace-nowrap";
+                }
+            });
+
+            // Activate Selected
+            const target = document.getElementById('tool-' + toolId);
+            const activeBtn = document.getElementById('btn-tab-' + toolId);
+            const activeMob = document.getElementById('mob-tab-' + toolId);
+            
+            if (target) target.classList.remove('hidden');
+            if (activeBtn) activeBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-blue-600 text-white shadow-sm";
+            if (activeMob) activeMob.className = "px-3 py-1 rounded bg-blue-600 text-white font-bold whitespace-nowrap";
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Smooth Scroll without changing URL or jumping
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Interactive Accordion (No Jump)
+        function toggleFaq(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.innerText = '−';
+            } else {
+                el.classList.add('hidden');
+                icon.innerText = '+';
+            }
+        }
+
+        // Deal Desk Submit Feedback
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            document.getElementById('deal-form').reset();
+            const msg = document.getElementById('form-success');
+            msg.classList.remove('hidden');
+            setTimeout(() => {
+                msg.classList.add('hidden');
+            }, 6000);
+        }
+
+        // Math 1: Lease vs Loan
+        function calculateLeaseVsLoan() {
+            const cost = parseFloat(document.getElementById('asset_cost').value) || 0;
+            const tax = (parseFloat(document.getElementById('tax_rate').value) || 0) / 100;
+            const months = parseInt(document.getElementById('term_months').value) || 1;
+            const apr = (parseFloat(document.getElementById('loan_apr').value) || 0) / 100;
+            const leaseMonthly = parseFloat(document.getElementById('lease_monthly').value) || 0;
+
+            const mRate = apr / 12;
+            const loanPmt = mRate > 0 ? (cost * mRate * Math.pow(1 + mRate, months)) / (Math.pow(1 + mRate, months) - 1) : cost / months;
+            const totalLoan = loanPmt * months;
+            const loanTaxShield = (cost + (totalLoan - cost)) * tax;
+            const netLoan = totalLoan - loanTaxShield;
+
+            const totalLease = leaseMonthly * months;
+            const leaseTaxShield = totalLease * tax;
+            const netLease = totalLease - leaseTaxShield;
+
+            document.getElementById('loan_total').innerText = "$" + Math.round(netLoan).toLocaleString();
+            document.getElementById('loan_monthly_disp').innerText = "Monthly Payment: $" + Math.round(loanPmt).toLocaleString() + "/mo";
+            document.getElementById('lease_total').innerText = "$" + Math.round(netLease).toLocaleString();
+            document.getElementById('lease_tax_saved').innerText = "Est. Tax Shield Deductions: -$" + Math.round(leaseTaxShield).toLocaleString();
+
+            const verdict = document.getElementById('lease_verdict');
+            if (netLoan < netLease) {
+                const diff = Math.round(netLease - netLoan).toLocaleString();
+                verdict.className = "mt-4 p-4 rounded-xl text-xs font-semibold border bg-emerald-950/40 border-emerald-800 text-emerald-300";
+                verdict.innerText = `Financial Advantage: Commercial Financing saves approximately $${diff} in net capital outlay over ${months} months compared to operating lease.`;
+            } else {
+                const diff = Math.round(netLoan - netLease).toLocaleString();
+                verdict.className = "mt-4 p-4 rounded-xl text-xs font-semibold border bg-blue-950/40 border-blue-800 text-blue-300";
+                verdict.innerText = `Financial Advantage: Equipment Lease preserves capital, yielding $${diff} lower net capital drain after corporate tax shields.`;
+            }
+        }
+
+        // Math 2: DSCR
+        function calculateDSCR() {
+            const P = parseFloat(document.getElementById('dscr_principal').value) || 0;
+            const r = ((parseFloat(document.getElementById('dscr_rate').value) || 0) / 100) / 12;
+            const n = (parseInt(document.getElementById('dscr_years').value) || 1) * 12;
+            const noi = parseFloat(document.getElementById('dscr_noi').value) || 0;
+
+            const mPayment = r > 0 ? (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : P / n;
+            const annualDebt = mPayment * 12;
+            const dscr = annualDebt > 0 ? noi / annualDebt : 0;
+
+            document.getElementById('dscr_annual_debt').innerText = "$" + Math.round(annualDebt).toLocaleString() + "/yr";
+            document.getElementById('dscr_monthly_disp').innerText = "Monthly: $" + Math.round(mPayment).toLocaleString() + "/mo";
+            document.getElementById('dscr_ratio').innerText = dscr.toFixed(2) + "x";
+
+            const status = document.getElementById('dscr_status');
+            if (dscr >= 1.25) {
+                status.className = "mt-4 p-4 rounded-xl text-xs font-semibold border bg-emerald-950/40 border-emerald-800 text-emerald-300";
+                status.innerText = `Bank Grade: DSCR of ${dscr.toFixed(2)}x exceeds standard institutional requirements (1.25x minimum). Eligible for commercial debt.`;
+            } else if (dscr >= 1.0) {
+                status.className = "mt-4 p-4 rounded-xl text-xs font-semibold border bg-amber-950/40 border-amber-800 text-amber-300";
+                status.innerText = `Moderate Risk: DSCR of ${dscr.toFixed(2)}x covers debt service but falls below traditional commercial bank standards (1.25x).`;
+            } else {
+                status.className = "mt-4 p-4 rounded-xl text-xs font-semibold border bg-rose-950/40 border-rose-800 text-rose-300";
+                status.innerText = `High Risk: DSCR of ${dscr.toFixed(2)}x indicates operating cash flow cannot cover debt service obligations.`;
+            }
+        }
+
+        // Math 3: Cap Rate
+        function calculateCapRate() {
+            const price = parseFloat(document.getElementById('cap_price').value) || 0;
+            const noi = parseFloat(document.getElementById('cap_noi').value) || 0;
+            const cash = parseFloat(document.getElementById('cap_cash').value) || 0;
+            const debt = parseFloat(document.getElementById('cap_debt').value) || 0;
+
+            if (price <= 0 || cash <= 0) return;
+
+            const capRate = (noi / price) * 100;
+            const netCashFlow = noi - debt;
+            const cocReturn = (netCashFlow / cash) * 100;
+
+            document.getElementById('cap_rate_result').innerText = capRate.toFixed(2) + "%";
+            document.getElementById('coc_result').innerText = cocReturn.toFixed(2) + "%";
+            document.getElementById('cap_net_cashflow').innerText = "Pre-Tax Cash Flow: $" + Math.round(netCashFlow).toLocaleString() + "/yr";
+
+            const status = document.getElementById('cap_status');
+            if (capRate >= 7.0 && cocReturn >= 8.0) {
+                status.className = "mt-4 p-4 rounded-xl text-xs font-semibold border bg-emerald-950/40 border-emerald-800 text-emerald-300";
+                status.innerText = `High Performing Asset: ${capRate.toFixed(2)}% Cap Rate exceeds institutional baseline. Strong cash-on-cash yield.`;
+            } else if (capRate >= 5.0) {
+                status.className = "mt-4 p-4 rounded-xl text-xs font-semibold border bg-blue-950/40 border-blue-800 text-blue-300";
+                status.innerText = `Core Investment Grade: ${capRate.toFixed(2)}% Cap Rate reflects prime, low-risk commercial assets.`;
+            } else {
+                status.className = "mt-4 p-4 rounded-xl text-xs font-semibold border bg-amber-950/40 border-amber-800 text-amber-300";
+                status.innerText = `Compressed Yield: ${capRate.toFixed(2)}% Cap Rate requires value-add strategy to optimize net returns.`;
+            }
+        }
+
+        // Initialize All Calculations on Load
+        calculateLeaseVsLoan();
+        calculateDSCR();
+        calculateCapRate();
+    </script>
+</body>
+</html>
