@@ -1,0 +1,31 @@
+name: Daily Financial Tools Engine
+
+on:
+  schedule:
+    - cron: '0 4 * * *' # Har roz subah khud chalega
+  workflow_dispatch:      # Jab chaho button daba kar run kar lo
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run Financial Automation Engine
+        run: python auto_engine.py
+
+      - name: Commit and Push to Cloudflare
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Automated Daily Financial Tool [skip ci]" && git push origin main)
